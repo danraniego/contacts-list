@@ -11,7 +11,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   List<Contact> contacts = [];
-  bool loading = true;
 
   @override
   void initState() {
@@ -28,10 +27,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   getContacts() async {
-    contacts = await FlutterContacts.getContacts();
-    setState(() {
-      loading = false;
-    });
+    contacts = await FlutterContacts.getContacts(withProperties: true);
+    setState(() {});
   }
 
   @override
@@ -44,9 +41,12 @@ class _HomePageState extends State<HomePage> {
           itemCount: contacts.length,
           itemBuilder: (context, index) {
             return ListTile(
-              leading: const Icon(Icons.account_circle),
+              leading: const CircleAvatar(
+                child: Icon(Icons.person),
+              ),
               title: Text(contacts[index].displayName),
-              subtitle: Text(contacts[index].phones.first.number),
+              subtitle: Text(contacts[index].phones.isNotEmpty
+                  ? contacts[index].phones.first.number : "--"),
             );
           }
       ),
