@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,10 +21,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   checkPermission() async {
-    bool isAllowed =  await FlutterContacts.requestPermission();
-    if (isAllowed) {
+
+    var status = await Permission.contacts.status;
+    if (status.isGranted) {
       await getContacts();
     }
+
   }
 
   getContacts() async {
